@@ -70,11 +70,10 @@ def rem(gram):
 
 	for i in range(c-1,0,-1):
 		ai = "A"+str(i)
-		for j in range(0,i):
+		for _ in range(i):
 			aj = gramA[ai][0][0]
-			if ai!=aj :
-				if aj in gramA and checkForIndirect(gramA,ai,aj):
-					gramA = rep(gramA, ai)
+			if ai != aj and aj in gramA and checkForIndirect(gramA, ai, aj):
+				gramA = rep(gramA, ai)
 
 	for i in range(1,c):
 		ai = "A"+str(i)

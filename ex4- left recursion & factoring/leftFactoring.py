@@ -22,24 +22,18 @@ alphabetset=["A'","B'","C'","D'","E'","F'","G'","H'","I'","J'","K'","L'","M'","N
 
 
 s= "S->iEtS|iEtSeS|a"
-while(True):
-    rules=[]
+newalphabet=alphabetset.pop()
+while True:
     common=[]
     split=s.split("->")
     starting=split[0]
-    for i in split[1].split("|"):
-        rules.append(i)
-
+    rules = list(split[1].split("|"))
     for k, l in groupby(rules).items():
         r = [l[0] for l in takewhile(prefix, zip(*l))]
         common.append(''.join(r))
     for i in common:
-        newalphabet=alphabetset.pop()
         print(starting+"->"+i+newalphabet)
-        index=[]
-        for k in rules:
-            if(k.startswith(i)):
-                index.append(k)
+        index = [k for k in rules if (k.startswith(i))]
         print(newalphabet+"->",end="")
         for j in index[:-1]:
             stringtoprint=j.replace(i,"", 1)+"|"
