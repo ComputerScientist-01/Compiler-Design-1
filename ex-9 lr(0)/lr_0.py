@@ -5,17 +5,11 @@ gram = {
 start = "S"
 terms = ["a","d","$"]
 
-non_terms = []
-for i in gram:
-	non_terms.append(i)
+non_terms = list(gram)
 gram["S'"]= [start]
 
 
-new_row = {}
-for i in terms+non_terms:
-	new_row[i]=""
-
-
+new_row = {i: "" for i in terms+non_terms}
 non_terms += ["S'"]
 # each row in state table will be dictionary {nonterms ,term,$}
 stateTable = []
@@ -29,7 +23,8 @@ def Closure(term, I):
 	I = list(set(I))
 	for i in I:
 		# print("." != i[1][-1],i[1][i[1].index(".")+1])
-		if "." != i[1][-1] and i[1][i[1].index(".")+1] in non_terms and i[1][i[1].index(".")+1] != term:
+		if (i[1][-1] != "." and i[1][i[1].index(".") + 1] in non_terms
+		    and i[1][i[1].index(".") + 1] != term):
 			I += Closure(i[1][i[1].index(".")+1], [])
 	return I
 
@@ -56,25 +51,14 @@ while countI<len(omegaList):
 			if "."+i in j[1]:
 				rep = j[1].replace("."+i,i+".")
 				In+=[(j[0],rep)]
-		if (In[0][1][-1]!="."):
-			temp = set(Closure(i,In))
-			if temp not in omegaList:
-				omegaList.append(temp)
-			if i in non_terms:
-				newrow[i] = str(omegaList.index(temp))
-			else:
-				newrow[i] = "s"+str(omegaList.index(temp))
-			print(f'Goto(I{countI-1},{i}):{temp} That is I{omegaList.index(temp)}')
+		temp = set(Closure(i,In)) if (In[0][1][-1]!=".") else set(In)
+		if temp not in omegaList:
+			omegaList.append(temp)
+		if i in non_terms:
+			newrow[i] = str(omegaList.index(temp))
 		else:
-			temp = set(In)
-			if temp not in omegaList:
-				omegaList.append(temp)
-			if i in non_terms:
-				newrow[i] = str(omegaList.index(temp))
-			else:
-				newrow[i] = "s"+str(omegaList.index(temp))
-			print(f'Goto(I{countI-1},{i}):{temp} That is I{omegaList.index(temp)}')
-
+			newrow[i] = "s"+str(omegaList.index(temp))
+		print(f'Goto(I{countI-1},{i}):{temp} That is I{omegaList.index(temp)}')
 	stateTable.append(newrow)
 print("\n\nList of I's\n")
 for i in omegaList:
@@ -82,9 +66,7 @@ for i in omegaList:
 
 
 #populate replace elements in state Table
-I0 = []
-for i in list(omegaList[0]):
-	I0 += [i[1].replace(".","")]
+I0 = [i[1].replace(".","") for i in list(omegaList[0])]
 print(I0)
 
 for i in omegaList:

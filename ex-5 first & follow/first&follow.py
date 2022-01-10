@@ -73,11 +73,10 @@ def rem(gram):
 
 	for i in range(c-1,0,-1):
 		ai = "A"+str(i)
-		for j in range(0,i):
+		for _ in range(i):
 			aj = gramA[ai][0][0]
-			if ai!=aj :
-				if aj in gramA and checkForIndirect(gramA,ai,aj):
-					gramA = rep(gramA, ai)
+			if ai != aj and aj in gramA and checkForIndirect(gramA, ai, aj):
+				gramA = rep(gramA, ai)
 
 	for i in range(1,c):
 		ai = "A"+str(i)
@@ -117,7 +116,7 @@ def first(gram, term):
 	for i in gram[term]:
 		if i[0] not in gram:
 			a.append(i[0])
-		elif i[0] in gram:
+		else:
 			a += first(gram, i[0])
 	return a
 
@@ -135,10 +134,7 @@ def follow(gram, term):
 				temp = i
 				indx = i.index(term)
 				if indx+1!=len(i):
-					if i[-1] in firsts:
-						a+=firsts[i[-1]]
-					else:
-						a+=[i[-1]]
+					a += firsts[i[-1]] if i[-1] in firsts else [i[-1]]
 				else:
 					a+=["e"]
 				if rule != term and "e" in a:

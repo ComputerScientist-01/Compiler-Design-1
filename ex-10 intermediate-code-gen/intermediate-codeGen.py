@@ -29,7 +29,7 @@ def infix_to_prefix(formula):
     op_stack = []
     exp_stack = []
     for ch in formula:
-        if not ch in OPERATORS:
+        if ch not in OPERATORS:
             exp_stack.append(ch)
         elif ch == '(':
             op_stack.append(ch)
@@ -47,7 +47,7 @@ def infix_to_prefix(formula):
                 b = exp_stack.pop()
                 exp_stack.append( op+b+a )
             op_stack.append(ch)
-    
+
     # leftover
     while op_stack:
         op = op_stack.pop()
